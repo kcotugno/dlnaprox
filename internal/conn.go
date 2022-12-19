@@ -2,9 +2,7 @@ package internal
 
 import (
 	"errors"
-	"fmt"
 	"net"
-	"net/netip"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -45,17 +43,6 @@ func NewConn(p *Proxy, iface net.Interface, localIP net.IP, src *net.UDPAddr, ou
 	c.socket, err = net.ListenUDP("udp4", &net.UDPAddr{IP: localIP})
 	if err != nil {
 		return
-	}
-
-	var a netip.AddrPort
-	a, err = netip.ParseAddrPort(c.socket.LocalAddr().String())
-	if err != nil {
-		return
-	}
-	c.Dst = net.UDPAddrFromAddrPort(a)
-	if c.Dst.IP.String() == "0.0.0.0" {
-		fmt.Println(localIP)
-		panic(c)
 	}
 
 	log.Debug().

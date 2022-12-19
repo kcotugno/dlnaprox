@@ -2,7 +2,6 @@ package internal
 
 import (
 	"errors"
-	"fmt"
 	"net"
 	"os"
 	"regexp"
@@ -145,10 +144,8 @@ func (p Proxy) Run() {
 func (p *Proxy) handleInterface(group netGroup, in <-chan Message, out chan<- Message, rewrite bool) {
 	var wg sync.WaitGroup
 
-	defer fmt.Println("done " + group.iface.Name)
 	defer wg.Wait()
 	defer close(out)
-	defer fmt.Println("closing " + group.iface.Name)
 
 	conn, err := newMuticastSocket(group.iface)
 	if err != nil {
